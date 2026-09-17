@@ -23,8 +23,9 @@ export default defineConfig(() => {
           changeOrigin: true
         },
         '/uploads': {
-          target: process.env.PHP_TARGET || 'http://127.0.0.1:8001',
-          changeOrigin: true
+          target: process.env.UPLOADS_TARGET || 'https://omsjewels.com',
+          changeOrigin: true,
+          secure: false
         },
         '/api-mjdta.php': {
           target: 'https://thejewellersassociation.org',

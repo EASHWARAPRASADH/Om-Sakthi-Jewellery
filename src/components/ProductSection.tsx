@@ -416,6 +416,9 @@ export default function ProductSection({
                         src={product.image}
                         alt={product.title}
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=500';
+                        }}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
                       />
                       

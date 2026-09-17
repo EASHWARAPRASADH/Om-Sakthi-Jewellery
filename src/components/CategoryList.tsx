@@ -82,6 +82,9 @@ export default function CategoryList({ categories, activeCategory, onSelectCateg
                       src={cat.image}
                       alt={cat.name}
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&q=80&w=300';
+                      }}
                       className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>
