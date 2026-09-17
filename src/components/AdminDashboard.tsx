@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   KeyRound, Package, FolderTree, Settings, RefreshCw, Plus, 
   Trash2, Edit, Upload, Eye, Check, X, ShieldAlert, Sparkles 

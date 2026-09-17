@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Product, CartItem, Category, MetalRate } from './types';
+import { PRODUCTS, CATEGORIES } from './data/jewelryData';
 
 // Modular Component Imports
 import TopUtilityBar from './components/TopUtilityBar';
@@ -121,62 +122,100 @@ export default function App() {
   };
 
   // Map products
-  const products: Product[] = dbProducts.map((p) => {
-    const title = p[`title_${language}`] || p.title_en;
-    const description = p[`description_${language}`] || p.description_en;
-    
-    const cat = dbCategories.find(c => c.id === p.category_id);
-    const categorySlug = cat ? cat.slug : 'other';
-    const subcatName = cat ? cat.name_en : 'Jewelry';
-    
-    return {
-      id: String(p.id),
-      title: title,
-      category: categorySlug,
-      subcategory: subcatName,
-      price: getProductPrice(p),
-      weight: p.weight,
-      image: p.image_url || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=300',
-      rating: 4.8,
-      purity: p.purity,
-      description: description,
-      isFeatured: p.is_featured === 1,
-      isNewArrived: p.is_new_arrival === 1,
-      sku: p.sku || `OMS-P-${p.id}`,
-      gender: p.gender as any,
-      occasion: p.occasion as any
-    };
-  });
+  const products: Product[] = (dbProducts && dbProducts.length > 0)
+    ? dbProducts.map((p) => {
+        const title = p[`title_${language}`] || p.title_en;
+        const description = p[`description_${language}`] || p.description_en;
+        
+        const cat = dbCategories.find(c => c.id === p.category_id);
+        const categorySlug = cat ? cat.slug : 'other';
+        const subcatName = cat ? cat.name_en : 'Jewelry';
+        
+        return {
+          id: String(p.id),
+          title: title,
+          category: categorySlug,
+          subcategory: subcatName,
+          price: getProductPrice(p),
+          weight: p.weight,
+          image: p.image_url || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=300',
+          rating: 4.8,
+          purity: p.purity,
+          description: description,
+          isFeatured: p.is_featured === 1,
+          isNewArrived: p.is_new_arrival === 1,
+          sku: p.sku || `OMS-P-${p.id}`,
+          gender: p.gender as any,
+          occasion: p.occasion as any
+        };
+      })
+    : PRODUCTS;
 
   // Map categories
-  const categoriesList: Category[] = dbCategories
-    .filter(c => !c.parent_id) // top level
-    .map((c) => {
-      const subcatIds = dbCategories.filter(sub => sub.parent_id === c.id).map(sub => sub.id);
-      const targetIds = [c.id, ...subcatIds];
-      const count = dbProducts.filter(p => targetIds.includes(p.category_id)).length;
-      const name = c[`name_${language}`] || c.name_en;
-      
-      return {
-        id: String(c.id),
-        name: name,
-        slug: c.slug,
-        image: c.image || 'https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&q=80&w=300',
-        itemCount: count
-      };
-    });
+  const categoriesList: Category[] = (dbCategories && dbCategories.length > 0)
+    ? dbCategories
+        .filter(c => !c.parent_id) // top level
+        .map((c) => {
+          const subcatIds = dbCategories.filter(sub => sub.parent_id === c.id).map(sub => sub.id);
+          const targetIds = [c.id, ...subcatIds];
+          const count = dbProducts.filter(p => targetIds.includes(p.category_id)).length;
+          const name = c[`name_${language}`] || c.name_en;
+          
+          return {
+            id: String(c.id),
+            name: name,
+            slug: c.slug,
+            image: c.image || 'https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&q=80&w=300',
+            itemCount: count
+          };
+        })
+    : CATEGORIES;
 
   // Map slides
-  const slides = dbBanners.map((b) => ({
-    id: b.id,
-    title: b[`title_${language}`] || b.title_en,
-    subtitle: b[`subtitle_${language}`] || b.subtitle_en,
-    description: b[`subtitle_${language}`] || b.subtitle_en, // reuse subtitle for description
-    mediaType: b.media_type,
-    image: b.image_url,
-    video: b.video_url,
-    link: b.link_url
-  }));
+  const defaultSlides = [
+    {
+      id: 1,
+      title: t('hero.slide1_title') || 'Royal Bridal Harams & Chokers',
+      subtitle: 'Handcrafting Tamil Nadu’s Royal Heritage Since 1985',
+      description: t('hero.slide1_desc') || 'Experience hand-crafted antique masterworks designed by heritage Chola-inspired designers for your timeless wedding day.',
+      mediaType: 'video',
+      video: '/assets/ai_actor_video.mp4',
+      image: '/assets/ai_actor.jpeg',
+      link: '#/category/gold'
+    },
+    {
+      id: 2,
+      title: t('hero.slide2_title') || 'Solitaire Diamond Necklaces',
+      subtitle: 'Legacy of Trust & 100% Purity Guarantee',
+      description: t('hero.slide2_desc') || 'Certified VVS Clarity, EF Color diamonds hand-set in certified 18K white gold baskets.',
+      mediaType: 'video',
+      video: '/assets/ai_actor_video2.mp4',
+      image: '/assets/ai_actor1.jpeg',
+      link: '#/category/diamond'
+    },
+    {
+      id: 3,
+      title: t('hero.slide3_title') || 'DigiGold Savings Scheme',
+      subtitle: 'Lock in Today’s Gold Rate for 11 Months',
+      description: t('hero.slide3_desc') || 'Lock in today gold rate for 11 months with zero registration charges. Pay monthly and get the 12th installment entirely free!',
+      mediaType: 'image',
+      image: '/assets/ai_actor2.jpeg',
+      link: '#/schemes'
+    }
+  ];
+
+  const slides = (dbBanners && dbBanners.length > 0)
+    ? dbBanners.map((b) => ({
+        id: b.id,
+        title: b[`title_${language}`] || b.title_en,
+        subtitle: b[`subtitle_${language}`] || b.subtitle_en,
+        description: b[`subtitle_${language}`] || b.subtitle_en, // reuse subtitle for description
+        mediaType: b.media_type,
+        image: b.image_url,
+        video: b.video_url,
+        link: b.link_url
+      }))
+    : defaultSlides;
 
   // Filtering Logic
   const getFilteredProducts = () => {
