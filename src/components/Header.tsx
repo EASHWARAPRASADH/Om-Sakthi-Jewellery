@@ -363,6 +363,18 @@ export default function Header({
     { name: 'Gift Store', id: 'gift', action: () => { setActiveCategory('gift'); document.getElementById('product-sections-container')?.scrollIntoView({ behavior: 'smooth' }); } },
     { name: 'Collections', id: 'collections', action: () => { setActiveCategory('collections'); document.getElementById('product-sections-container')?.scrollIntoView({ behavior: 'smooth' }); } },
     { name: 'Offers', id: 'offers', action: () => { setActiveCategory('offers'); document.getElementById('product-sections-container')?.scrollIntoView({ behavior: 'smooth' }); } },
+    { name: 'Video', id: 'video', action: () => {
+      setActiveCategory('video');
+      const elem = document.getElementById('video-showcase-section');
+      if (elem) {
+        const headerOffset = 110;
+        const elementPosition = elem.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      } else {
+        document.getElementById('product-sections-container')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    } },
   ];
 
   return (

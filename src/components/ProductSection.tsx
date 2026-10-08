@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Product } from '../types';
-import { Heart, ShoppingCart, Star, Eye, Sparkles } from 'lucide-react';
+import { Heart, ShoppingCart, Eye, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -38,6 +38,7 @@ export default function ProductSection({
     { id: 'gift', name: 'Gift Store' },
     { id: 'collections', name: 'Collections' },
     { id: 'offers', name: 'Offers' },
+    { id: 'video', name: 'Video' },
   ];
 
   // Filter products by selected catalog category AND isFeatured/isNewArrived
@@ -46,6 +47,8 @@ export default function ProductSection({
     if (activeCategory !== 'all') {
       if (activeCategory === 'offers') {
         if (!p.discountPrice) return false;
+      } else if (activeCategory === 'video') {
+        if (!p.isFeatured && !p.isNewArrived) return false;
       } else if (activeCategory === 'collections') {
         if (!p.isFeatured) return false;
       } else if (activeCategory.startsWith('gold_')) {
@@ -436,20 +439,6 @@ export default function ProductSection({
 
                     {/* Card Content details */}
                     <div className="p-4 flex-1 flex flex-col text-left">
-                      
-                      {/* Stars */}
-                      <div className="flex items-center gap-1 mb-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-3 h-3 ${
-                              i < Math.floor(product.rating) ? 'text-gold-500 fill-gold-500' : 'text-gray-200'
-                            }`}
-                          />
-                        ))}
-                        <span className="text-[10px] text-gray-400 font-mono font-semibold ml-1">{product.rating}</span>
-                      </div>
-
                       {/* Product Title */}
                       <h3 className="text-xs font-bold text-gray-800 line-clamp-2 min-h-[32px] group-hover:text-maroon-700 transition-colors">
                         {product.title}

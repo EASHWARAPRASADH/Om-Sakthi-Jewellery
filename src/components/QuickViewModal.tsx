@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Product } from '../types';
-import { X, ShoppingCart, Star, MessageSquare, Shield, Award, Sparkles, RefreshCw } from 'lucide-react';
+import { X, ShoppingCart, MessageSquare, Shield, Award, Sparkles, RefreshCw } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -84,16 +84,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart }: QuickV
           {/* Details Content */}
           <div className="p-6 sm:p-8 text-left flex flex-col justify-between">
             <div className="space-y-4">
-              {/* Category Breadcrumbs & Rating */}
+              {/* Category Breadcrumbs */}
               <div className="flex justify-between items-center">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-gold-600">
                   {product.category} &rsaquo; {product.subcategory}
                 </span>
-                
-                <div className="flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 text-gold-500 fill-gold-500" />
-                  <span className="text-xs font-mono font-bold text-gray-700">{product.rating}</span>
-                </div>
               </div>
 
               {/* Title */}

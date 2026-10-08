@@ -9,6 +9,7 @@ import HeroCarousel from './components/HeroCarousel';
 import TrustBadges from './components/TrustBadges';
 import CategoryList from './components/CategoryList';
 import ProductSection from './components/ProductSection';
+import VideoShowcaseSection from './components/VideoShowcaseSection';
 import DigitalBusinessCard from './components/DigitalBusinessCard';
 import LeadershipSection from './components/LeadershipSection';
 import AuspiciousDaysSection from './components/AuspiciousDaysSection';
@@ -178,8 +179,7 @@ export default function App() {
       title: t('hero.slide1_title') || 'Royal Bridal Harams & Chokers',
       subtitle: 'Handcrafting Tamil Nadu’s Royal Heritage Since 1985',
       description: t('hero.slide1_desc') || 'Experience hand-crafted antique masterworks designed by heritage Chola-inspired designers for your timeless wedding day.',
-      mediaType: 'video',
-      video: '/assets/ai_actor_video.mp4',
+      mediaType: 'image',
       image: '/assets/ai_actor.jpeg',
       link: '#/category/gold'
     },
@@ -188,8 +188,7 @@ export default function App() {
       title: t('hero.slide2_title') || 'Solitaire Diamond Necklaces',
       subtitle: 'Legacy of Trust & 100% Purity Guarantee',
       description: t('hero.slide2_desc') || 'Certified VVS Clarity, EF Color diamonds hand-set in certified 18K white gold baskets.',
-      mediaType: 'video',
-      video: '/assets/ai_actor_video2.mp4',
+      mediaType: 'image',
       image: '/assets/ai_actor1.jpeg',
       link: '#/category/diamond'
     },
@@ -210,9 +209,9 @@ export default function App() {
         title: b[`title_${language}`] || b.title_en,
         subtitle: b[`subtitle_${language}`] || b.subtitle_en,
         description: b[`subtitle_${language}`] || b.subtitle_en, // reuse subtitle for description
-        mediaType: b.media_type,
-        image: b.image_url,
-        video: b.video_url,
+        mediaType: 'image',
+        image: b.image_url || '/assets/ai_actor.jpeg',
+        video: '',
         link: b.link_url
       }))
     : defaultSlides;
@@ -227,6 +226,10 @@ export default function App() {
     
     if (activeCategory === 'offers') {
       return filtered.filter(p => p.discountPrice !== undefined);
+    }
+
+    if (activeCategory === 'video') {
+      return filtered.filter(p => p.isFeatured || p.isNewArrived);
     }
     
     if (activeCategory === 'collections') {
@@ -420,6 +423,13 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        {/* Video Showcase: Jewellery in Motion */}
+        <VideoShowcaseSection 
+          products={products}
+          onSelectProduct={setSelectedProduct}
+          onExploreCategory={handleSetActiveCategory}
+        />
 
         {/* 6. Product Grid (Featured & Just Arrived, with integrated category tabs & Quick View) */}
         <ProductSection 
